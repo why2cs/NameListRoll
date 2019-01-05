@@ -60,5 +60,8 @@
     <Image Include="res\NameListRoll.ico">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="res\background.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>

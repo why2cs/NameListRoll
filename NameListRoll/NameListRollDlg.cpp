@@ -160,17 +160,20 @@ BOOL CNameListRollDlg::PreTranslateMessage(MSG* pMsg)
 		case VK_DELETE:
 			if (!isRolling) {
 				if (!currentDisplayHasDeleted) {
-					auto status = MessageBox(StoWs("是否要从名单中删除:  【" + nameList[index - 1] + "】  ?").c_str(), StoWs("提示").c_str(), MB_OKCANCEL);
+					auto status = MessageBox(StoWs("是否要从名单中删除:  【" + nameList[index - 1] + "】  ?\n\n注意：只从当前运行程序的内存中删除，不会修改txt名单文件，因此删除操作在重启程序后无效。").c_str(), StoWs("提示").c_str(), MB_OKCANCEL);
 					if (status == IDOK) {
 						--index;
 						nameList.erase(nameList.begin() + index);
 						currentDisplayHasDeleted = true;
 					}
 				} else {
-					MessageBox(StoWs("当前人员已经被删除过了！").c_str(), StoWs("提示").c_str(), MB_OK);
+					MessageBox(StoWs("当前屏幕项 已经被删除过了！").c_str(), StoWs("提示").c_str(), MB_OK);
 				}
-				MessageBox(StoWs(nameList[index - 1] + "  " + nameList[index] + "  " + nameList[index + 1]).c_str());
+				//MessageBox(StoWs(nameList[index - 1] + "  " + nameList[index] + "  " + nameList[index + 1]).c_str());
 			}
+			break;
+		case VK_RETURN:
+			return true;
 			break;
 		default:
 			break;
