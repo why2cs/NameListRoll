@@ -186,6 +186,11 @@ BOOL CNameListRollDlg::PreTranslateMessage(MSG* pMsg)
 void CNameListRollDlg::readFile()
 {
 	ifstream nameStream("config.txt", ifstream::in);
+	if (!nameStream) {
+		MessageBox(StoWs("没有在当前程序所在文件夹中找到配置文件【config.txt】。\n\n\
+请在当前程序所在路径下手工创建【config.txt】文件，\n该文本文件的一行对应一个待抽取项！").c_str(), StoWs("提示").c_str(), MB_OK);
+		OnOK();
+	}
 	string name;
 
 	while (getline(nameStream, name)) {
