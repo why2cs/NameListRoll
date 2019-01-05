@@ -50,6 +50,7 @@ private:
 	bool isRolling = false;
 	bool randomOrder = false;
 	bool isFullScreen = false;
+	bool currentDisplayHasDeleted = false;
 
 	vector<string> nameList;
 	size_t index = 0;

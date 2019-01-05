@@ -142,6 +142,7 @@ BOOL CNameListRollDlg::PreTranslateMessage(MSG* pMsg)
 			if (!isRolling) {
 				SetTimer(ROLL, 50, NULL);
 				isRolling = true;
+				currentDisplayHasDeleted = false;
 			} else {
 				KillTimer(ROLL);
 				isRolling = false;
@@ -154,6 +155,21 @@ BOOL CNameListRollDlg::PreTranslateMessage(MSG* pMsg)
 			} else {
 				ShowWindow(SW_RESTORE);
 				isFullScreen = false;
+			}
+			break;
+		case VK_DELETE:
+			if (!isRolling) {
+				if (!currentDisplayHasDeleted) {
+					auto status = MessageBox(StoWs("是否要从名单中删除:  【" + nameList[index - 1] + "】  ?").c_str(), StoWs("提示").c_str(), MB_OKCANCEL);
+					if (status == IDOK) {
+						--index;
+						nameList.erase(nameList.begin() + index);
+						currentDisplayHasDeleted = true;
+					}
+				} else {
+					MessageBox(StoWs("当前人员已经被删除过了！").c_str(), StoWs("提示").c_str(), MB_OK);
+				}
+				MessageBox(StoWs(nameList[index - 1] + "  " + nameList[index] + "  " + nameList[index + 1]).c_str());
 			}
 			break;
 		default:
