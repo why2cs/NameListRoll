@@ -148,6 +148,17 @@ BOOL CNameListRollDlg::PreTranslateMessage(MSG* pMsg)
 				isRolling = false;
 			}
 			break;
+		case VK_F8:
+			if (!isRolling) {
+				randomOrder = true;
+				if (randomOrder) {
+					srand((unsigned)time(NULL));
+					random_shuffle(nameList.begin(), nameList.end());
+				}
+			} else {
+				MessageBox(StoWs("请先停止滚动再进行操作！！！").c_str(), StoWs("提示").c_str(), MB_OK);
+			}
+			break;
 		case VK_F11:
 			if (!isFullScreen) {
 				ShowWindow(SW_SHOWMAXIMIZED);
@@ -170,6 +181,8 @@ BOOL CNameListRollDlg::PreTranslateMessage(MSG* pMsg)
 					MessageBox(StoWs("当前屏幕项 已经被删除过了！").c_str(), StoWs("提示").c_str(), MB_OK);
 				}
 				//MessageBox(StoWs(nameList[index - 1] + "  " + nameList[index] + "  " + nameList[index + 1]).c_str());
+			} else {
+				MessageBox(StoWs("请先停止滚动再进行操作！！！").c_str(), StoWs("提示").c_str(), MB_OK);
 			}
 			break;
 		case VK_RETURN:
@@ -195,13 +208,23 @@ void CNameListRollDlg::readFile()
 
 	while (getline(nameStream, name)) {
 		if (name.size() > 0 && (name != "\t" || name != " " || name != "\r")) {
-			nameList.push_back(name);
+			if (std::find(nameList.cbegin(), nameList.cend(), name) == nameList.cend()) {
+				nameList.push_back(name);
+			} else {
+				duplicateNameList.push_back(name);
+			}
 		}
 	}
 
-	if (randomOrder) {
-		srand((unsigned)time(NULL));
-		random_shuffle(nameList.begin(), nameList.end());
+	if (!duplicateNameList.empty()) {
+		string duplicateNameString;
+		for (const auto& s:duplicateNameList) {
+			duplicateNameString = duplicateNameString + "\n" + s;
+		}
+
+		MessageBox(StoWs("读取的配置文件【config.txt】中存在重复抽取项，请修改它。重复项如下：\n————————————————————————"
+			+ duplicateNameString).c_str(), StoWs("提示").c_str(), MB_OK);
+		OnOK();
 	}
 }
 

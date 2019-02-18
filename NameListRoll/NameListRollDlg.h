@@ -53,6 +53,7 @@ private:
 	bool currentDisplayHasDeleted = false;
 
 	vector<string> nameList;
+	vector<string> duplicateNameList;
 	size_t index = 0;
 	CBrush brush;
 	CFont font;
