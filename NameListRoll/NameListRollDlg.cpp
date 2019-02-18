@@ -154,6 +154,7 @@ BOOL CNameListRollDlg::PreTranslateMessage(MSG* pMsg)
 				if (randomOrder) {
 					srand((unsigned)time(NULL));
 					random_shuffle(nameList.begin(), nameList.end());
+					MessageBox(StoWs("所有滚动项顺序已被重新打乱！").c_str(), StoWs("提示").c_str(), MB_OK);
 				}
 			} else {
 				MessageBox(StoWs("请先停止滚动再进行操作！！！").c_str(), StoWs("提示").c_str(), MB_OK);
